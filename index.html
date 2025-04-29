@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Marc's Portfolio Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f6fa;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100vh;
+      background: #2f3542;
+      padding-top: 60px;
+      transition: 0.3s;
+      z-index: 1000;
+    }
+    .sidebar.open {
+      left: 0;
+    }
+    .sidebar a {
+      display: block;
+      color: white;
+      padding: 15px 30px;
+      text-decoration: none;
+      font-size: 18px;
+      transition: background 0.3s;
+    }
+    .sidebar a:hover {
+      background: #57606f;
+      transform: scale(1.05);
+    }
+    .hamburger {
+      position: fixed;
+      top: 15px;
+      left: 20px;
+      z-index: 1100;
+      font-size: 24px;
+      color: #2f3542;
+      background: #fff;
+      border-radius: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .main {
+      margin-left: 0;
+      padding: 80px 30px;
+      transition: 0.3s;
+    }
+    .sidebar.open ~ .main {
+      margin-left: 250px;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 100px 20px 50px;
+      background: linear-gradient(to bottom right, #1e90ff, #6a1b9a);
+      color: white;
+      border-radius: 10px;
+      margin-bottom: 50px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: #f1f2f6;
+    }
+
+    /* Card Section */
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 50px;
+    }
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      width: 300px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    .card i {
+      font-size: 3rem;
+      color: #1e90ff;
+      margin-bottom: 15px;
+      transition: transform 0.3s;
+    }
+    .card:hover i {
+      transform: rotate(10deg) scale(1.2);
+    }
+    .card h3 {
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .card p {
+      font-size: 1rem;
+      color: #777;
+    }
+    /* Hover effect for cards */
+    .card:hover p {
+      color: #1e90ff;
+    }
+
+    /* Section Seperation */
+    section {
+      padding: 80px 30px;
+      margin: 50px 0;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .main {
+        margin-left: 0;
+        padding: 80px 20px;
+      }
+    }
+
+     /* Skills Section */
+     .skills {
+      max-width: 600px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .skills h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    /* Horizontal Stirrers */
+    .stirrers {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      gap: 15px;
+      height: 100px;
+      margin-top: 30px;
+    }
+    .stirrer {
+      width: 30px;
+      border-radius: 10px;
+      transition: transform 0.3s;
+    }
+    .stirrer:hover {
+      transform: scale(1.1);
+    }
+    .stirrer:nth-child(1) {
+      height: 90%;
+      background-color: #1e90ff;
+    }
+    .stirrer:nth-child(2) {
+      height: 80%;
+      background-color: #ff6347;
+    }
+    .stirrer:nth-child(3) {
+      height: 70%;
+      background-color: #32cd32;
+    }
+    .stirrer:nth-child(4) {
+      height: 60%;
+      background-color: #ff4500;
+    } 
+
+    .skills {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 15px;
+}
+.skill {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.skill img {
+  width: 30px;
+  height: 30px;
+}
+.bar {
+  height: 20px;
+  border-radius: 10px;
+  background-color: #ddd;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+.bar::after {
+  content: '';
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+.bar.html::after {
+  width: 95%;
+  background-color: #e34c26;
+}
+.bar.css::after {
+  width: 75%;
+  background-color: #264de4;
+}
+.bar.js::after {
+  width: 40%;
+  background-color: #f0db4f;
+}
+.bar.python::after {
+  width: 10%;
+  background-color: #306998;
+} 
+
+.bar:hover::after {
+  transform: scaleX(1.05);
+  filter: brightness(1.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.bar::after {
+  transition: all 0.3s ease-in-out;
+}
+
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 30px;
+  margin-top: 50px;
+}
+
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
+  flex: 1 1 250px;
+}
+
+
+  </style>
+</head>
+<body>
+
+  <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+
+  <div class="sidebar" id="sidebar">
+    <a href="#hero">Dashboard</a>
+    <a href="#about">About Me</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <div class="main">
+    <!-- Hero Section with Typing Animation -->
+  <section class="hero">
+    <h1 id="heroTitle"></h1>
+    <p id="heroSubtitle">A Creative Developer & Designer</p>
+  </section>
+
+    <!-- About Me Card Section -->
+    <section class="cards" id="about">
+        <div class="card" data-tilt>
+          <i class="fas fa-user"></i>
+          <h3>About Me</h3>
+          <p>I’m a student from the Philippines, a pianist & badminton player.</p>
+        </div>
+        <div class="card" data-tilt>
+          <i class="fas fa-code"></i>
+          <h3>Projects</h3>
+          <p>Check out my creative HTML, JS, and Python work!</p>
+        </div>
+        <div class="card" data-tilt>
+          <i class="fas fa-chart-line"></i>
+          <h2>My Skill Levels</h2>
+          <div class="skills">
+            <div class="skill">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" />
+              <div class="bar html"></div>
+            </div>
+            <div class="skill">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS" />
+              <div class="bar css"></div>
+            </div>
+            <div class="skill">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" />
+              <div class="bar js"></div>
+            </div>
+            <div class="skill">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" />
+              <div class="bar python"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+
+    <!-- Contact Section -->
+    <section id="contact" style="background: #f5f6fa; border-radius: 8px;">
+      <h2>Contact Me</h2>
+      <p>If you'd like to get in touch, please feel free to reach out!</p>
+    </section>
+  </div>
+
+  <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/typewriter-effect@2.18.0/dist/core.js"></script>
+  <!-- Script -->
+  <script>
+    // Typing Animation
+    const typewriter = new Typewriter('#heroTitle', {
+      loop: true,
+      delay: 75,
+    });
+
+    typewriter.typeString('Hi, I\'m Marc')
+      .pauseFor(1000)
+      .deleteAll()
+      .typeString('Creative Developer & Designer')
+      .pauseFor(1000)
+      .start();
+  
+   // Sidebar toggle
+    const hamburger = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
+    hamburger.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+
+    // Tilt init
+    VanillaTilt.init(document.querySelectorAll(".card"), {
+      max: 15,
+      speed: 400,
+      glare: true,
+      "max-glare": 0.3,
+    });
+
+    // Hero animation
+    gsap.from("#heroTitle", {
+      duration: 1.2,
+      y: -50,
+      opacity: 0,
+      ease: "power3.out"
+    });
+    gsap.from("#heroSubtitle", {
+      duration: 1.2,
+      delay: 0.3,
+      y: 50,
+      opacity: 0,
+      ease: "power3.out"
+    });
+
+    // Scroll animations for cards
+    const cards = document.querySelectorAll('.card');
+    cards.forEach((card, i) => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: "top 90%",
+        },
+        duration: 0.8,
+        y: 30,
+        opacity: 0,
+        ease: "power2.out",
+        delay: i * 0.1
+      });
+    });
+
+  </script>
+
+  <!-- ScrollTrigger plugin -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+  </script>
+
+</body>
+</html>
